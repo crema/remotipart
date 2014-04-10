@@ -116,13 +116,16 @@
     // and should revert all changes made to the page to enable the
     // submission via this transport.
     function cleanUp() {
-      files.each(function(i, file) {
-        var $file = $(file);
-        $file.data("clone").replaceWith($file);
-      });
-      form.remove();
-      iframe.one("load", function() { iframe.remove(); });
-      iframe.attr("src", "about:blank");
+      if(form){
+        files.each(function(i, file) {
+          var $file = $(file);
+          $file.data("clone").replaceWith($file);
+        });
+        form.remove();
+        form = null
+      }
+      iframe.bind("load", function() { iframe.remove(); });
+      iframe.attr("src", "javascript:false;");
     }
 
     // Remove "iframe" from the data types list so that further processing is
